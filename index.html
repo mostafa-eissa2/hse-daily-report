@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSE Daily Report by Mostafa Eissa</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style id="desktop-styles">
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #28a745;
+            --background-color: #f0f2f5;
+            --container-bg: #ffffff;
+            --text-color: #333;
+            --border-color: #dee2e6;
+            --section-bg-color: #f8f9fa;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            font-family: 'Cairo', sans-serif; margin: 0; padding: 15px;
+            background-color: var(--background-color); direction: rtl;
+            color: var(--text-color); font-size: 15px;
+        }
+
+        .container {
+            max-width: 950px; margin: auto; background: var(--container-bg);
+            border-radius: 12px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08); overflow: hidden;
+        }
+
+        #content-to-print { padding: 20px 35px; }
+        .pdf-section {
+            background-color: var(--section-bg-color); border: 1px solid var(--border-color);
+            border-radius: 10px; padding: 15px 20px; margin-bottom: 20px; overflow: hidden;
+        }
+
+        h1 {
+            color: var(--primary-color); text-align: center; font-size: 1.8rem;
+            font-weight: 700; margin: 0; padding: 0;
+        }
+
+        h2 {
+            color: var(--secondary-color); text-align: center; font-weight: 700;
+            border-bottom: 2px solid var(--secondary-color); padding-bottom: 8px;
+            margin: 0 0 20px 0; font-size: 1.5rem;
+        }
+
+        h3 {
+            color: var(--primary-color); border-bottom: 1px solid var(--border-color);
+            padding-bottom: 6px; margin-top: 15px; margin-bottom: 15px; font-size: 1.1rem;
+        }
+
+        table { width: 100%; border-collapse: collapse; background-color: #fff; }
+
+        th, td {
+            border: 1px solid var(--border-color); padding: 10px 12px;
+            text-align: right; vertical-align: middle;
+        }
+
+        th { background-color: #f1f3f5; font-weight: 700; }
+
+        input, textarea {
+            width: 100%; padding: 9px; border: 1px solid var(--border-color);
+            border-radius: 6px; font-family: 'Cairo', sans-serif;
+            font-size: 0.95rem; transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            outline: none; border-color: var(--secondary-color);
+            box-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
+        }
+
+        textarea { resize: vertical; min-height: 80px; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 15px; }
+        #project-details-grid { grid-template-columns: repeat(4, 1fr); }
+        .grid-item label { margin-bottom: 6px; font-weight: 700; color: #555; font-size: 0.9rem; display: block; }
+        .button-container { text-align: center; padding: 20px; background-color: #f8f9fa; border-top: 1px solid var(--border-color); }
+
+        #download-btn {
+            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color)); color: white; padding: 12px 35px; border: none;
+            border-radius: 50px; cursor: pointer; font-size: 16px; font-family: 'Cairo', sans-serif; font-weight: 700;
+            transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+        }
+        #download-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(40, 167, 69, 0.4); }
+        #download-btn:disabled { background: #b0b0b0; cursor: not-allowed; box-shadow: none; transform: none; }
+        #download-btn.loading::after { content: ''; display: inline-block; width: 16px; height: 16px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s ease-in-out infinite; margin-right: 10px; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        footer { text-align: center; padding: 30px 20px; margin-top: 20px; }
+        .social-icons a { display: inline-block; margin: 0 12px; transition: transform 0.3s ease; }
+        .social-icons a:hover { transform: translateY(-4px); }
+        .social-icons svg { width: 32px; height: 32px; fill: #555; transition: fill 0.3s ease; }
+        .social-icons a:hover svg { fill: var(--primary-color); }
+        .footer-credit { margin-top: 20px; font-size: 1rem; color: #777; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; direction: ltr; }
+    </style>
+
+    <style id="mobile-styles">
+        @media (max-width: 768px) {
+            body { font-size: 14px; }
+            .container { padding: 0; }
+            #content-to-print { padding: 10px; }
+            h2 { font-size: 1.3rem; margin-top: 0; margin-bottom: 15px; }
+            .pdf-section { padding: 10px; }
+
+            #project-details-grid { grid-template-columns: 1fr; }
+
+            .responsive-table thead { display: none; }
+            .responsive-table, .responsive-table tbody, .responsive-table tr, .responsive-table td { display: block; width: 100%; }
+
+            .responsive-table tr {
+                margin-bottom: 15px; border: 1px solid var(--border-color);
+                border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            }
+            .responsive-table td {
+                display: flex; justify-content: space-between; align-items: center;
+                text-align: right; padding: 12px; border-bottom: 1px solid #e9ecef;
+            }
+            .responsive-table tr td:last-child { border-bottom: none; }
+
+            .responsive-table td[data-label]::before {
+                content: attr(data-label); font-weight: bold; color: var(--primary-color);
+                flex: 1; text-align: right; padding-left: 10px;
+            }
+            .responsive-table td[data-label] > input,
+            .responsive-table td[data-label] > b {
+                flex: 1.2; min-width: 0; text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="content-to-print">
+        <div class="pdf-section"><h1>تقرير السلامة والصحة المهنية اليومي</h1></div>
+        <form id="hseForm">
+            <div class="pdf-section">
+                <h2>1. بيانات المشروع الأساسية</h2>
+                <div class="grid-container" id="project-details-grid">
+                    <div class="grid-item"><label for="projectName">اسم المشروع</label><input type="text" id="projectName"></div>
+                    <div class="grid-item"><label for="location">الموقع</label><input type="text" id="location"></div>
+                    <div class="grid-item"><label for="supervisorName">مشرف السلامة</label><input type="text" id="supervisorName"></div>
+                    <div class="grid-item"><label for="reportDate">التاريخ</label><input type="date" id="reportDate"></div>
+                </div>
+            </div>
+            <div class="pdf-section">
+                <h2>2. بيانات القوى العاملة</h2>
+                <h3>قوة عمل الشركة</h3>
+                <table><thead><tr><th>عدد العاملين الدائمين بالشركة</th><th>عدد العاملين بنظام اليومية</th></tr></thead><tbody><tr><td><input type="number" id="companyHired" placeholder="0"></td><td><input type="number" id="companyDaily" placeholder="0"></td></tr></tbody></table>
+                <h3>قوة عمل مقاولي الباطن</h3>
+                <table class="simple-table"><thead><tr><th>مقاولي الباطن</th><th>العاملين بالموقع</th></tr></thead><tbody id="subcontractors-body"></tbody></table>
+            </div>
+            <div class="pdf-section">
+                <h2>3. جدول المخالفات والحوادث</h2>
+                <table class="responsive-table">
+                    <thead><tr><th>الجهة</th><th>LTI</th><th>MTC</th><th>First aid</th><th>Env. Incident</th><th>Prop. Damage</th><th>Near Miss</th></tr></thead>
+                    <tbody>
+                        <tr><td data-label="الجهة"><b>الشركة</b></td><td data-label="LTI"><input type="number" id="incCompanyLTI" placeholder="0"></td><td data-label="MTC"><input type="number" id="incCompanyMTC" placeholder="0"></td><td data-label="First aid"><input type="number" id="incCompanyFirstAid" placeholder="0"></td><td data-label="Env. Incident"><input type="number" id="incCompanyEnv" placeholder="0"></td><td data-label="Prop. Damage"><input type="number" id="incCompanyDamage" placeholder="0"></td><td data-label="Near Miss"><input type="number" id="incCompanyNearMiss" placeholder="0"></td></tr>
+                        <tr><td data-label="الجهة"><b>المقاولون</b></td><td data-label="LTI"><input type="number" id="incSubLTI" placeholder="0"></td><td data-label="MTC"><input type="number" id="incSubMTC" placeholder="0"></td><td data-label="First aid"><input type="number" id="incSubFirstAid" placeholder="0"></td><td data-label="Env. Incident"><input type="number" id="incSubEnv" placeholder="0"></td><td data-label="Prop. Damage"><input type="number" id="incSubDamage" placeholder="0"></td><td data-label="Near Miss"><input type="number" id="incSubNearMiss" placeholder="0"></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pdf-section">
+                <h2>4. جدول الملاحظات والتدريب</h2>
+                <table class="responsive-table">
+                    <thead><tr><th>الجهة</th><th>Unsafe Act</th><th>Unsafe Cond.</th><th>Env. Impact</th><th>Positive Obs.</th><th>Induction</th><th>Training</th></tr></thead>
+                    <tbody>
+                        <tr><td data-label="الجهة"><b>الشركة</b></td><td data-label="Unsafe Act"><input type="number" id="obsCompanyUnsafeAct" placeholder="0"></td><td data-label="Unsafe Cond."><input type="number" id="obsCompanyUnsafeCond" placeholder="0"></td><td data-label="Env. Impact"><input type="number" id="obsCompanyEnvImpact" placeholder="0"></td><td data-label="Positive Obs."><input type="number" id="obsCompanyPositive" placeholder="0"></td><td data-label="Induction"><input type="number" id="obsCompanyInduction" placeholder="0"></td><td data-label="Training"><input type="number" id="obsCompanyTraining" placeholder="0"></td></tr>
+                        <tr><td data-label="الجهة"><b>المقاولون</b></td><td data-label="Unsafe Act"><input type="number" id="obsSubUnsafeAct" placeholder="0"></td><td data-label="Unsafe Cond."><input type="number" id="obsSubUnsafeCond" placeholder="0"></td><td data-label="Env. Impact"><input type="number" id="obsSubEnvImpact" placeholder="0"></td><td data-label="Positive Obs."><input type="number" id="obsSubPositive" placeholder="0"></td><td data-label="Induction"><input type="number" id="obsSubInduction" placeholder="0"></td><td data-label="Training"><input type="number" id="obsSubTraining" placeholder="0"></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="pdf-section">
+                <h2>5. أنشطة السلامة والصحة المهنية</h2>
+                <table><tbody><tr><th>Hazard Report</th><td><input type="number" id="actHazard" placeholder="0"></td><th>Obs. Cards</th><td><input type="number" id="actObservation" placeholder="0"></td></tr><tr><th>Closed Hazard</th><td><input type="number" id="actClosed" placeholder="0"></td><th>Monthly Tour</th><td><input type="number" id="actMonthlyTour" placeholder="0"></td></tr><tr><th>Weekly Walk</th><td><input type="number" id="actWeeklyWalk" placeholder="0"></td><th>Equip. Inspect.</th><td><input type="number" id="actEquipInspect" placeholder="0"></td></tr><tr><th>HSE Drills</th><td><input type="number" id="actDrills" placeholder="0"></td><th>HSE Campaigns</th><td><input type="number" id="actCampaigns" placeholder="0"></td></tr><tr><th>PTW</th><td><input type="number" id="actPtw" placeholder="0"></td><th>Total Points</th><td><input type="number" id="actTotal" placeholder="0"></td></tr></tbody></table>
+            </div>
+            <div class="pdf-section"><h2>6. المعدات المستخدمة في العمل</h2><textarea id="equipmentUsed"></textarea></div>
+            <div class="pdf-section"><h2>7. تفاصيل الأعمال المنجزة</h2><textarea id="completedTasks"></textarea></div>
+            <div class="pdf-section">
+                <h2>8. بيانات العمل الإضافي</h2>
+                <table class="responsive-table">
+                    <thead><tr><th>وقت البدء</th><th>وقت الانتهاء</th><th>ساعات العمل</th><th>ساعات إضافية</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="وقت البدء"><input type="time" id="otStartTime"></td>
+                            <td data-label="وقت الانتهاء"><input type="time" id="otEndTime"></td>
+                            <td data-label="ساعات العمل"><input type="number" id="otWorkedHours" placeholder="0"></td>
+                            <td data-label="ساعات إضافية"><input type="number" id="otHours" placeholder="0"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+    <div class="button-container"><button id="download-btn" onclick="generatePdf()">تنزيل التقرير PDF</button></div>
+</div>
+
+<footer>
+    <div class="social-icons">
+        <a href="mailto:mostafaeissa231@gmail.com" target="_blank" title="Gmail"><svg viewBox="0 0 24 24"><path d="M20,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6A2,2 0 0,0 20,4M20,8L12,13L4,8V6L12,11L20,6V8Z"/></svg></a>
+        <a href="https://www.linkedin.com/in/mostafa-eissa-dev" target="_blank" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3H19M18.5,18.5V13.2A3.26,3.26 0 0,0 15.24,9.94C14.39,9.94 13.4,10.43 12.9,11.2V10.13H10.13V18.5H12.9V13.57C12.9,12.8 13.5,12.17 14.31,12.17A1.4,1.4 0 0,1 15.71,13.57V18.5H18.5M6.88,8.56A1.68,1.68 0 0,0 8.56,6.88C8.56,6 7.78,5.2 6.88,5.2A1.69,1.69 0 0,0 5.2,6.88C5.2,7.78 6,8.56 6.88,8.56M8.27,18.5V10.13H5.5V18.5H8.27Z"/></svg></a>
+        
+    </div>
+    <p class="footer-credit">Designed & Developed by Mostafa Eissa</p>
+</footer>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
