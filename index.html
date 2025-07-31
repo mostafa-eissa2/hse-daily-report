@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Forms</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="landing-body">
+
+    <div class="lang-switcher">
+        <button id="lang-toggle-btn" data-lang-key="langToggle"></button>
+    </div>
+
+    <div class="landing-container">
+        <h1 data-lang-key="landingTitle"></h1>
+        <p class="subtitle" data-lang-key="landingSubtitle"></p>
+
+        <div class="form-cards-container">
+            <a href="hse_report.html" class="form-card">
+                <h2 data-lang-key="hseCardTitle"></h2>
+                <p data-lang-key="hseCardDesc"></p>
+            </a>
+
+            <a href="weekly_walk_down.html" class="form-card">
+                <h2 data-lang-key="walkDownCardTitle"></h2>
+                <p data-lang-key="walkDownCardDesc"></p>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/mostafa-eissa-dev" target="_blank" title="LinkedIn"><svg
+                    viewBox="0 0 24 24">
+                    <path
+                        d="M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3H19M18.5,18.5V13.2A3.26,3.26 0 0,0 15.24,9.94C14.39,9.94 13.4,10.43 12.9,11.2V10.13H10.13V18.5H12.9V13.57C12.9,12.8 13.5,12.17 14.31,12.17A1.4,1.4 0 0,1 15.71,13.57V18.5H18.5M6.88,8.56A1.68,1.68 0 0,0 8.56,6.88C8.56,6 7.78,5.2 6.88,5.2A1.69,1.69 0 0,0 5.2,6.88C5.2,7.78 6,8.56 6.88,8.56M8.27,18.5V10.13H5.5V18.5H8.27Z" />
+                </svg></a>
+            <a href="mailto:mostafaeissa231@gmail.com" target="_blank" title="Gmail"><svg viewBox="0 0 24 24">
+                    <path
+                        d="M20,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6A2,2 0 0,0 20,4M20,8L12,13L4,8V6L12,11L20,6V8Z" />
+                </svg></a>
+        </div>
+        <p class="footer-credit">Designed & Developed by Mostafa Eissa</p>
+    </footer>
+
+    <script src="translations.js"></script>
+    <script>
+        // Load saved language or default to Arabic
+        let currentLang = localStorage.getItem('preferredLang') || 'ar';
+        const langBtn = document.getElementById('lang-toggle-btn');
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            // Save the choice to localStorage
+            localStorage.setItem('preferredLang', lang);
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+            document.querySelectorAll('[data-lang-key]').forEach(el => {
+                const key = el.dataset.langKey;
+                if (translations[lang] && translations[lang].landing_page[key]) {
+                    el.textContent = translations[lang].landing_page[key];
+                }
+            });
+        }
+
+        langBtn.addEventListener('click', () => {
+            const newLang = currentLang === 'ar' ? 'en' : 'ar';
+            setLanguage(newLang);
+        });
+
+        // Initialize page language based on saved preference
+        setLanguage(currentLang);
+    </script>
+</body>
+
+</html>

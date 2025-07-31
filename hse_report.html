@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSE Daily Report by Mostafa Eissa</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+
+<body dir="rtl">
+
+    <div class="top-nav-buttons">
+        <a href="index.html" class="back-to-home" data-lang-key="backToHome"></a>
+        <div class="lang-switcher">
+            <button id="lang-toggle-btn" data-lang-key="langToggle"></button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="content-to-print">
+            <div class="pdf-section">
+                <h1>HSE Daily Report</h1>
+            </div>
+            <form id="hseForm">
+                <div class="pdf-section">
+                    <h2>1. <span data-lang-key="section1Title"></span></h2>
+                    <div class="grid-container" id="project-details-grid">
+                        <div class="grid-item"><label for="projectName" data-lang-key="projectName"></label><input
+                                type="text" id="projectName"></div>
+                        <div class="grid-item"><label for="location" data-lang-key="location"></label><input type="text"
+                                id="location"></div>
+                        <div class="grid-item"><label for="supervisorName" data-lang-key="supervisorName"></label><input
+                                type="text" id="supervisorName"></div>
+                        <div class="grid-item"><label for="reportDate" data-lang-key="date"></label><input type="date"
+                                id="reportDate"></div>
+                    </div>
+                </div>
+                <div class="pdf-section">
+                    <h2>2. <span data-lang-key="section2Title"></span></h2>
+                    <h3 data-lang-key="companyManpower"></h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th data-lang-key="hiredEmployees"></th>
+                                <th data-lang-key="dailyRateWorkers"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="number" id="companyHired" placeholder="0"></td>
+                                <td><input type="number" id="companyDaily" placeholder="0"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h3 data-lang-key="subcontractorManpower"></h3>
+                    <table id="subcontractors-table">
+                        <thead>
+                            <tr>
+                                <th data-lang-key="subcontractors"></th>
+                                <th data-lang-key="manpowerOnSite"></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="subcontractors-body"></tbody>
+                    </table>
+                    <button type="button" id="add-subcontractor-btn" class="add-btn"><span
+                            data-lang-key="addSubcontractor"></span></button>
+                </div>
+                <div class="pdf-section">
+                    <h2>3. <span data-lang-key="section3Title"></span></h2>
+                    <table class="responsive-table" id="incidents-table">
+                        <thead>
+                            <tr>
+                                <th data-lang-key="entity"></th>
+                                <th data-lang-key="lti"></th>
+                                <th data-lang-key="mtc"></th>
+                                <th data-lang-key="firstAid"></th>
+                                <th data-lang-key="envIncident"></th>
+                                <th data-lang-key="propDamage"></th>
+                                <th data-lang-key="nearMiss"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-label-key="entity"><b></b></td>
+                                <td data-label-key="lti"><input type="number" id="incCompanyLTI" placeholder="0"></td>
+                                <td data-label-key="mtc"><input type="number" id="incCompanyMTC" placeholder="0"></td>
+                                <td data-label-key="firstAid"><input type="number" id="incCompanyFirstAid"
+                                        placeholder="0"></td>
+                                <td data-label-key="envIncident"><input type="number" id="incCompanyEnv"
+                                        placeholder="0"></td>
+                                <td data-label-key="propDamage"><input type="number" id="incCompanyDamage"
+                                        placeholder="0"></td>
+                                <td data-label-key="nearMiss"><input type="number" id="incCompanyNearMiss"
+                                        placeholder="0"></td>
+                            </tr>
+                            <tr>
+                                <td data-label-key="entity"><b></b></td>
+                                <td data-label-key="lti"><input type="number" id="incSubLTI" placeholder="0"></td>
+                                <td data-label-key="mtc"><input type="number" id="incSubMTC" placeholder="0"></td>
+                                <td data-label-key="firstAid"><input type="number" id="incSubFirstAid" placeholder="0">
+                                </td>
+                                <td data-label-key="envIncident"><input type="number" id="incSubEnv" placeholder="0">
+                                </td>
+                                <td data-label-key="propDamage"><input type="number" id="incSubDamage" placeholder="0">
+                                </td>
+                                <td data-label-key="nearMiss"><input type="number" id="incSubNearMiss" placeholder="0">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pdf-section">
+                    <h2>4. <span data-lang-key="section4Title"></span></h2>
+                    <table class="responsive-table" id="observations-table">
+                        <thead>
+                            <tr>
+                                <th data-lang-key="entity"></th>
+                                <th data-lang-key="unsafeAct"></th>
+                                <th data-lang-key="unsafeCond"></th>
+                                <th data-lang-key="envImpact"></th>
+                                <th data-lang-key="positiveObs"></th>
+                                <th data-lang-key="induction"></th>
+                                <th data-lang-key="training"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-label-key="entity"><b></b></td>
+                                <td data-label-key="unsafeAct"><input type="number" id="obsCompanyUnsafeAct"
+                                        placeholder="0"></td>
+                                <td data-label-key="unsafeCond"><input type="number" id="obsCompanyUnsafeCond"
+                                        placeholder="0"></td>
+                                <td data-label-key="envImpact"><input type="number" id="obsCompanyEnvImpact"
+                                        placeholder="0"></td>
+                                <td data-label-key="positiveObs"><input type="number" id="obsCompanyPositive"
+                                        placeholder="0"></td>
+                                <td data-label-key="induction"><input type="number" id="obsCompanyInduction"
+                                        placeholder="0"></td>
+                                <td data-label-key="training"><input type="number" id="obsCompanyTraining"
+                                        placeholder="0"></td>
+                            </tr>
+                            <tr>
+                                <td data-label-key="entity"><b></b></td>
+                                <td data-label-key="unsafeAct"><input type="number" id="obsSubUnsafeAct"
+                                        placeholder="0"></td>
+                                <td data-label-key="unsafeCond"><input type="number" id="obsSubUnsafeCond"
+                                        placeholder="0"></td>
+                                <td data-label-key="envImpact"><input type="number" id="obsSubEnvImpact"
+                                        placeholder="0"></td>
+                                <td data-label-key="positiveObs"><input type="number" id="obsSubPositive"
+                                        placeholder="0"></td>
+                                <td data-label-key="induction"><input type="number" id="obsSubInduction"
+                                        placeholder="0"></td>
+                                <td data-label-key="training"><input type="number" id="obsSubTraining" placeholder="0">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pdf-section">
+                    <h2>5. <span data-lang-key="section5Title"></span></h2>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th data-lang-key="hazardReport"></th>
+                                <td><input type="number" id="actHazard" placeholder="0"></td>
+                                <th data-lang-key="obsCards"></th>
+                                <td><input type="number" id="actObservation" placeholder="0"></td>
+                            </tr>
+                            <tr>
+                                <th data-lang-key="closedHazard"></th>
+                                <td><input type="number" id="actClosed" placeholder="0"></td>
+                                <th data-lang-key="monthlyTour"></th>
+                                <td><input type="number" id="actMonthlyTour" placeholder="0"></td>
+                            </tr>
+                            <tr>
+                                <th data-lang-key="weeklyWalk"></th>
+                                <td><input type="number" id="actWeeklyWalk" placeholder="0"></td>
+                                <th data-lang-key="equipInspect"></th>
+                                <td><input type="number" id="actEquipInspect" placeholder="0"></td>
+                            </tr>
+                            <tr>
+                                <th data-lang-key="hseDrills"></th>
+                                <td><input type="number" id="actDrills" placeholder="0"></td>
+                                <th data-lang-key="hseCampaigns"></th>
+                                <td><input type="number" id="actCampaigns" placeholder="0"></td>
+                            </tr>
+                            <tr>
+                                <th data-lang-key="ptw"></th>
+                                <td><input type="number" id="actPtw" placeholder="0"></td>
+                                <th data-lang-key="totalPoints"></th>
+                                <td><input type="number" id="actTotal" placeholder="0"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pdf-section">
+                    <h2>6. <span data-lang-key="section6Title"></span></h2><textarea id="equipmentUsed"
+                        data-lang-placeholder-key="equipmentPlaceholder"></textarea>
+                </div>
+                <div class="pdf-section">
+                    <h2>7. <span data-lang-key="section7Title"></span></h2><textarea id="completedTasks"
+                        data-lang-placeholder-key="completedTasksPlaceholder"></textarea>
+                </div>
+                <div class="pdf-section">
+                    <h2>8. <span data-lang-key="section8Title"></span></h2>
+                    <table class="responsive-table">
+                        <thead>
+                            <tr>
+                                <th data-lang-key="startTime"></th>
+                                <th data-lang-key="endTime"></th>
+                                <th data-lang-key="workedHours"></th>
+                                <th data-lang-key="overtimeHours"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-label-key="startTime"><input type="time" id="otStartTime"></td>
+                                <td data-label-key="endTime"><input type="time" id="otEndTime"></td>
+                                <td data-label-key="workedHours"><input type="number" id="otWorkedHours"
+                                        placeholder="0"></td>
+                                <td data-label-key="overtimeHours"><input type="number" id="otHours" placeholder="0">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+        <div class="button-container"><button id="download-btn" data-lang-key="downloadBtn"></button></div>
+    </div>
+
+    <footer>
+        <div class="social-icons">
+            <a href="https://www.linkedin.com/in/mostafa-eissa-dev" target="_blank" title="LinkedIn"><svg
+                    viewBox="0 0 24 24">
+                    <path
+                        d="M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5A2,2 0 0,1 3,19V5A2,2 0 0,1 5,3H19M18.5,18.5V13.2A3.26,3.26 0 0,0 15.24,9.94C14.39,9.94 13.4,10.43 12.9,11.2V10.13H10.13V18.5H12.9V13.57C12.9,12.8 13.5,12.17 14.31,12.17A1.4,1.4 0 0,1 15.71,13.57V18.5H18.5M6.88,8.56A1.68,1.68 0 0,0 8.56,6.88C8.56,6 7.78,5.2 6.88,5.2A1.69,1.69 0 0,0 5.2,6.88C5.2,7.78 6,8.56 6.88,8.56M8.27,18.5V10.13H5.5V18.5H8.27Z" />
+                </svg></a>
+            <a href="mailto:mostafaeissa231@gmail.com" target="_blank" title="Gmail"><svg viewBox="0 0 24 24">
+                    <path
+                        d="M20,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6A2,2 0 0,0 20,4M20,8L12,13L4,8V6L12,11L20,6V8Z" />
+                </svg></a>
+        </div>
+        <p class="footer-credit">Designed & Developed by Mostafa Eissa</p>
+    </footer>
+    <script src="translations.js"></script>
+    <script src="pdf-generator.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
